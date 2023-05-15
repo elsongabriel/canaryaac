@@ -16,19 +16,15 @@ class EventSchedule {
     const XML_PATH = 'data/XML/events.xml';
     const DEFAULT_EVENT_NAME = 'Event';
 
-    public static function getEventDetails($eventTags, $tag) {
-        if ($eventTags->length > 0) {
-            return $eventTags[0]->getAttribute($tag) ?? '';
-        }
-        return '';
+    public static function getEventDetails($eventTags, $attribute)
+    {
+        return $eventTags->length > 0 ? $eventTags[0]->getAttribute($attribute) ?? '' : '';
     }
 
-    public static function formatDateAttribute($event, $attribute) {
+    public static function formatDateAttribute($event, $attribute)
+    {
         $date = date_create($event->getAttribute($attribute));
-        if ($date === false) {
-            return null;
-        }
-        return (int)$date->format('U');
+        return $date ? (int)$date->format('U') : null;
     }
 
     public static function loadEvents() {

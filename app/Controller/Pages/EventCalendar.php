@@ -9,37 +9,39 @@
 
 namespace App\Controller\Pages;
 
-use App\Model\Entity\Forum as EntityForum;
 use App\Model\Functions\Calendar;
-use \App\Utils\View;
-use App\Model\Functions\Server;
+use App\Utils\View;
 
-class EventCalendar extends Base{
+class EventCalendar extends Base
+{
 
     public static function viewEventCalendar($request)
     {
+        $current_day   = date('d');
+        $calendarmonth = date('m');
+        $calendaryear  = date('Y');
+
         $queryParams = $request->getQueryParams();
         if (!empty($queryParams)) {
             $calendarmonth = $queryParams['calendarmonth'];
-            $calendaryear = $queryParams['calendaryear'];
+            $calendaryear  = $queryParams['calendaryear'];
         }
-        $current_day = date('d');
-        $calendarmonth = date('m');
-        $calendaryear = date('Y');
-        $total_days_month = cal_days_in_month(CAL_GREGORIAN, $calendarmonth, $calendaryear);
-        for($i = 0; $i < $total_days_month; $i++){
-            $month[] = [
-                'day' => $i,
-                'currentday' => $current_day,
-            ];
-        }
+//        $total_days_month = cal_days_in_month(CAL_GREGORIAN, $calendarmonth, $calendaryear);
+//        for ($i = 0; $i < $total_days_month; $i++) {
+//            $month[] = [
+//                'day' => $i,
+//                'currentday' => $current_day,
+//            ];
+//        }
+//        die(json_encode(EventSchedule::getServerEvents()));
 
-        $calendar = new Calendar(date($calendaryear . '-' . $calendarmonth . '-' . $current_day));
-        $calendar->addEvent('Rapid Respawn', '2022-08-14', 7, 'red');
-        
+//        $calendar = ;
+//        $calendar->addEvents(EventSchedule::getServerEvents())
+//        $calendar->addEvent('Rapid Respawn', '2023-05-14', 7, 'red');
+
         $content = View::render('pages/eventcalendar', [
             'currentday' => $current_day,
-            'day' => $calendar ?? null,
+            'day'        => new Calendar(date("$calendaryear-$calendarmonth-$current_day")),
         ]);
         return parent::getBase('Event Schedule', $content, 'eventcalendar');
     }
